@@ -1,23 +1,37 @@
-import {HashRouter as Router, Route} from 'react-router-dom';
-import './App.css';
-import MovieList from '../MovieList/MovieList'
+import { HashRouter as Router, Route } from "react-router-dom";
+import "./App.css";
+import MovieList from "../MovieList/MovieList";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import Details from "../Details/Details"
 
 function App() {
+  const dispatch = useDispatch();
+  const movies = useSelector((store) => store.movies);
+
+  useEffect(() => {
+    dispatch({ type: "FETCH_MOVIES" });
+  }, []);
+
   return (
     <div className="App">
       <h1>The Movies Saga!</h1>
-      <Router>        
+      <Router>
         <Route path="/" exact>
           <MovieList />
         </Route>
-        
+
         {/* Details page */}
+        {movies.map((movie, i) => {
+          return <Details movie={{...movie, key: i}} />;
+        })}
 
         {/* Add Movie page */}
+
+
       </Router>
     </div>
   );
 }
-
 
 export default App;
