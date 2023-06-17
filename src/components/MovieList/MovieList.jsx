@@ -16,8 +16,8 @@ function MovieList() {
         <main>
             <h1>MovieList</h1>
             <section className="movies">
-                {movies.map(movie => {
-                  return <MovieListItem movie={movie} />
+                {movies.map((movie,i) => {
+                  return <MovieListItem key={i} movie={movie} />
                 })}
             </section>
         </main>

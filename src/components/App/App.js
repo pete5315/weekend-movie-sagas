@@ -22,10 +22,9 @@ function App() {
         </Route>
 
         {/* Details page */}
-        {movies.map((movie, i) => {
-          return <Details movie={{...movie, key: i}} />;
-        })}
-
+        <Route path="/details/:id" >
+          <Details />
+        </Route>
         {/* Add Movie page */}
 
 
