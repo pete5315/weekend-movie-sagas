@@ -4,6 +4,7 @@ import MovieList from "../MovieList/MovieList";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import Details from "../Details/Details"
+import MovieForm from '../MovieForm/MovieForm'
 
 function App() {
   const dispatch = useDispatch();
@@ -26,7 +27,9 @@ function App() {
           <Details />
         </Route>
         {/* Add Movie page */}
-
+        <Route exact path="/movieform">
+          <MovieForm/>
+        </Route>
 
       </Router>
     </div>
