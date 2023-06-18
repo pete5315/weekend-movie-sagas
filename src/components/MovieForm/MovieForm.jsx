@@ -5,6 +5,8 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { useState } from "react";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 function MovieForm() {
   const [selectedGenres, setSelectedGenres] = useState([]);
@@ -16,15 +18,21 @@ function MovieForm() {
         <InputLabel htmlFor="component-simple">Movie Name</InputLabel>
         <Input id="component-simple" />
       </FormControl>
+      <br></br>
       <FormControl variant="standard">
         <InputLabel htmlFor="component-simple">Poster URL</InputLabel>
         <Input id="component-simple" />
       </FormControl>
       <br></br>
       <FormControl variant="standard">
-        <InputLabel htmlFor="component-simple">Description</InputLabel>
-        <OutlinedInput id="component-simple" />
+      <TextField
+          id="outlined-multiline-static"
+          label="Description"
+          multiline
+          rows={4}
+      />
       </FormControl>
+      <br></br>
       <FormControl sx={{ m: 1, width: 500 }}>
       <InputLabel>Multiple Select</InputLabel>
       <Select
@@ -40,6 +48,8 @@ function MovieForm() {
         ))}
       </Select>
     </FormControl>
+    <br></br>
+    <Button variant="contained">Add movie</Button>
     </div>
   );
 }
