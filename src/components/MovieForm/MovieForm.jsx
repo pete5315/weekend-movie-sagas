@@ -25,29 +25,32 @@ function MovieForm() {
   }, []);
 
   function handleClick() {
-    console.log({
+    let newMovie={
       title: newTitle,
       poster: newURL,
       description: newDescription,
       genre_id: selectedGenres[0],
-    })
-    if(!newTitle||!newURL||!newDescription||!selectedGenres) {
-      alert('Please complete all fields')
-      return;
+    }
+    for (let trait in newMovie) {
+      if(newMovie[trait]) {
+        if (newMovie[trait].length===0) {
+          console.log(40);
+        alert('Please complete all fields')
+        return;
+        }
+      } else if (newMovie[trait]===undefined) {
+        alert('Please complete all fields')
+        return;
+      }
     }
     console.log("add movie")
     dispatch({
       type: "ADD_MOVIE",
-      payload: {
-        title: newTitle,
-        poster: newURL,
-        description: newDescription,
-        genre_id: selectedGenres[0],
-      },
+      payload: newMovie
     });
     history.push('/')
   }
-
+  
   return (
     <div>
       <FormControl variant="standard">
