@@ -21,4 +21,19 @@ router.get("/:id", (req, res) => {
     });
 });
 
+router.get("/", (req, res) => {
+  console.log("all genres");
+  const query = `SELECT * FROM genres`;
+  pool
+    .query(query)
+    .then((result) => {
+      console.log(result.rows);
+      res.send(result.rows);
+    })
+    .catch((err) => {
+      console.log("ERROR: Get genre movies", err);
+      res.sendStatus(500);
+    });
+});
+
 module.exports = router;
