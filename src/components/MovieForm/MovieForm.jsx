@@ -7,8 +7,10 @@ import Select from "@mui/material/Select";
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom/";
+
 
 function MovieForm() {
   let dispatch = useDispatch();
@@ -17,11 +19,22 @@ function MovieForm() {
   const [newTitle, setNewTitle] = useState([]);
   const [newURL, setNewURL] = useState([]);
   const [newDescription, setNewDescription] = useState([]);
+  const history=useHistory();
   useEffect(() => {
     dispatch({ type: "GET_GENRELIST" });
   }, []);
 
   function handleClick() {
+    console.log({
+      title: newTitle,
+      poster: newURL,
+      description: newDescription,
+      genre_id: selectedGenres[0],
+    })
+    if(!newTitle||!newURL||!newDescription||!selectedGenres) {
+      alert('Please complete all fields')
+      return;
+    }
     console.log("add movie")
     dispatch({
       type: "ADD_MOVIE",
@@ -32,6 +45,7 @@ function MovieForm() {
         genre_id: selectedGenres[0],
       },
     });
+    history.push('/')
   }
 
   return (
@@ -80,6 +94,9 @@ function MovieForm() {
         </Select>
       </FormControl>
       <br></br>
+      <Link to='/' >
+      <Button variant="contained">Cancel</Button>
+      </Link>
       <Button variant="contained" onClick={handleClick}>
         Add movie
       </Button>
