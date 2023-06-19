@@ -32,7 +32,7 @@ function Details() {
       payload: movieID,
     });
   }, [movieID]);
-  
+
   // here's our store items
   const details = useSelector((store) => store.details[0]);
   const genres = useSelector((store) => store.genres);
