@@ -1,14 +1,19 @@
+// import react
 import React from "react";
 import ReactDOM from "react-dom/client";
+// basic formatting provided with assignment
 import "./index.css";
+// import app where the initial routes will live
 import App from "./components/App/App.js";
+// store and combine reducers will make our variables and sagas available in every component
 import { createStore, combineReducers, applyMiddleware } from "redux";
+import logger from "redux-logger";
+import { takeEvery, put } from "redux-saga/effects";
 // Provider allows us to use redux within our react app
 import { Provider } from "react-redux";
-import logger from "redux-logger";
 // Import saga middleware
 import createSagaMiddleware from "redux-saga";
-import { takeEvery, put } from "redux-saga/effects";
+//import axios for server requests
 import axios from "axios";
 
 // Create the rootSaga generator function
@@ -23,8 +28,9 @@ function* rootSaga() {
 function* fetchAllMovies() {
   // get all movies from the DB
   try {
+    // axios call for all movies
     const movies = yield axios.get("/api/movie");
-    console.log("get all:", movies.data);
+    // send the movies to the store
     yield put({ type: "SET_MOVIES", payload: movies.data });
   } catch {
     console.log("get all error");
@@ -32,13 +38,13 @@ function* fetchAllMovies() {
 }
 
 function* getDetails(action) {
-  //get details for the current movie
-  console.log(action.payload);
+  // need genres for the current movie
   fetchGenres(action.payload);
+  // get details for the current movie
   try {
-    console.log(action.payload);
+    // axios call for specific details of one movie
     const details = yield axios.get(`/api/details/${action.payload.id}`);
-    console.log("details", details);
+    // send the details to the store
     yield put({ type: "SET_DETAILS", payload: details.data });
   } catch {
     console.log("detail error");
@@ -47,10 +53,10 @@ function* getDetails(action) {
 
 function* fetchGenres(movieID) {
   // get all genres from the DB for a movie
-  console.log(movieID);
   try {
+    // axios call for the genres of one specific movie
     const fetchedGenres = yield axios.get(`/api/genre/${movieID.payload.id}`);
-    console.log("genres:", fetchedGenres.data);
+    // send the genres for that movie to the store
     yield put({ type: "SET_GENRES", payload: fetchedGenres.data });
   } catch {
     console.log("get genres error");
@@ -61,7 +67,9 @@ function* addMovie(newMovie) {
   // add a movie to the DB
   console.log(newMovie);
   try {
+    // send the movie to the DB
     yield axios.post(`/api/movie/`, newMovie);
+    // update the store with the new movie
     fetchAllMovies;
   } catch {
     console.log("get genres error");
@@ -71,7 +79,9 @@ function* addMovie(newMovie) {
 function* getGenreList() {
   // get all genres from the DB
   try {
+    // axios call for the list of genres in the DB
     const genreList = yield axios.get(`/api/genre`);
+    // send the genre list to the store
     yield put({ type: "SET_GENRELIST", payload: genreList.data });
   } catch {
     console.log("get genres error");
@@ -91,18 +101,7 @@ const movies = (state = [], action) => {
   }
 };
 
-// Used to store the movie genres
-const genres = (state = [], action1) => {
-  switch (action1.type) {
-    case "SET_GENRES":
-      console.log(action1.payload);
-      return action1.payload;
-    default:
-      return state;
-  }
-};
-
-// Used to store the movie genres
+// Used to store the movie details
 const details = (state = [], action2) => {
   console.log(action2);
   switch (action2.type) {
@@ -114,7 +113,18 @@ const details = (state = [], action2) => {
   }
 };
 
-// Used to store the movie genres
+// Used to store the movie genres for the details movie
+const genres = (state = [], action1) => {
+  switch (action1.type) {
+    case "SET_GENRES":
+      console.log(action1.payload);
+      return action1.payload;
+    default:
+      return state;
+  }
+};
+
+// Used to store all of the movie genres
 const genreList = (state = [], action3) => {
   console.log(action3);
   switch (action3.type) {
@@ -144,6 +154,7 @@ sagaMiddleware.run(rootSaga);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
+    {/* make the store available to the components */}
     <Provider store={store}>
       <App />
     </Provider>

@@ -1,7 +1,9 @@
+// lots of boilerplate on this one
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+// WAY TOO MUCH MUI, GOOD LUCK TO US
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -14,10 +16,13 @@ import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
 
 function Details() {
+  // gonna need dispatch below
   const dispatch = useDispatch();
+  // this gives us the id of the current movie
   const movieID = useParams();
+
+  // need to update the details and genres on page load
   useEffect(() => {
-    console.log(movieID);
     dispatch({
       type: "GET_DETAILS",
       payload: movieID,
@@ -27,16 +32,19 @@ function Details() {
       payload: movieID,
     });
   }, [movieID]);
+  
+  // here's our store items
   const details = useSelector((store) => store.details[0]);
   const genres = useSelector((store) => store.genres);
+
+  // prevent some potential page load errors
   if (!details) {
-    console.log(22);
     return;
   }
   if (!genres) {
     return;
   }
-  console.log(genres);
+
   return (
     <Container
       sx={{ alignItems: "center", display: "flex", alignContent: "center" }}
@@ -49,6 +57,7 @@ function Details() {
           <img src={details.poster} alt={details.title} />
           <List>
             <ListSubheader>Genres:</ListSubheader>
+            {/* this probably won't break unless there are no genres for a movie */}
             {genres.map((genre, i) => (
               <ListItem key={i}>
                 <ListItemText primary={genre.name} />
@@ -57,6 +66,7 @@ function Details() {
           </List>
         </CardContent>
         <CardActions>
+          {/* link lets us move between pages without a history call */}
           <Link to="/">
             <Button>Return to list</Button>
           </Link>
