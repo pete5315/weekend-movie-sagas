@@ -26,11 +26,6 @@ function MovieList() {
     dispatch({ type: "FETCH_MOVIES" });
   }, []);
 
-  function goToMovieForm() {
-    console.log("YES");
-    ;
-  }
-
   return (
     <main>
       <Button variant="contained" onClick={() => history.push("/movieform")}>
